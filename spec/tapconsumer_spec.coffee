@@ -8,5 +8,21 @@ describe 'TAPConsumer', ->
 
     expect(TAPConsumer).toBeDefined()
 
+  describe '.is_diag', ->
+
+    it 'should return true when given diagnostic line', ->
+
+      expect(TAPConsumer.is_diag '# this is a diagnostic line').toBeTruthy()
+
+    it 'should return false when given no diagnostic line', ->
+
+      expect(TAPConsumer.is_diag '1..1').toBeFalsy()
+      expect(TAPConsumer.is_diag 'ok 1 - test line').toBeFalsy()
+
+    it 'should return false when given not string object', ->
+
+      expect(TAPConsumer.is_diag null).toBeFalsy()
+      expect(TAPConsumer.is_diag {}).toBeFalsy()
+
 jasmine.getEnv().addReporter new TAPReporter console.log
 jasmine.getEnv().execute()
