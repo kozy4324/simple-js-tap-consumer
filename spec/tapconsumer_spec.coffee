@@ -69,5 +69,41 @@ describe 'TAPConsumer', ->
       expect(TAPConsumer.is_not_ok null).toBeFalsy()
       expect(TAPConsumer.is_not_ok {}).toBeFalsy()
 
+  describe '.has_todo', ->
+
+    it 'should return true when given line is a test line and has TODO directive', ->
+
+      expect(TAPConsumer.has_todo 'ok # TODO').toBeTruthy()
+      expect(TAPConsumer.has_todo 'ok # todo').toBeTruthy()
+      expect(TAPConsumer.has_todo 'not ok # TODO').toBeTruthy()
+      expect(TAPConsumer.has_todo 'not ok # todo').toBeTruthy()
+
+    it 'should return false when given line is not a test line even if it has TODO directive', ->
+
+      expect(TAPConsumer.has_todo '# TODO').toBeFalsy()
+
+    it 'should return false when given not string object', ->
+
+      expect(TAPConsumer.has_todo null).toBeFalsy()
+      expect(TAPConsumer.has_todo {}).toBeFalsy()
+
+  describe '.has_skip', ->
+
+    it 'should return true when given line is a test line and has SKIP directive', ->
+
+      expect(TAPConsumer.has_skip 'ok # SKIP').toBeTruthy()
+      expect(TAPConsumer.has_skip 'ok # skip').toBeTruthy()
+      expect(TAPConsumer.has_skip 'not ok # SKIP').toBeTruthy()
+      expect(TAPConsumer.has_skip 'not ok # skip').toBeTruthy()
+
+    it 'should return false when given line is not a test line even if it has SKIP directive', ->
+
+      expect(TAPConsumer.has_skip '# SKIP').toBeFalsy()
+
+    it 'should return false when given not string object', ->
+
+      expect(TAPConsumer.has_skip null).toBeFalsy()
+      expect(TAPConsumer.has_skip {}).toBeFalsy()
+
 jasmine.getEnv().addReporter new TAPReporter console.log
 jasmine.getEnv().execute()
