@@ -105,5 +105,23 @@ describe 'TAPConsumer', ->
       expect(TAPConsumer.has_skip null).toBeFalsy()
       expect(TAPConsumer.has_skip {}).toBeFalsy()
 
+  describe '.is_bail_out', ->
+
+    it 'should return true when given bail_out line', ->
+
+      expect(TAPConsumer.is_bail_out 'Bail out!').toBeTruthy()
+
+    it 'should return false when given no bail_out line', ->
+
+      expect(TAPConsumer.is_bail_out 'ok').toBeFalsy()
+      expect(TAPConsumer.is_bail_out 'not ok').toBeFalsy()
+      expect(TAPConsumer.is_bail_out '# diag').toBeFalsy()
+      expect(TAPConsumer.is_bail_out '1..1').toBeFalsy()
+
+    it 'should return false when given not string line', ->
+
+      expect(TAPConsumer.is_bail_out null).toBeFalsy()
+      expect(TAPConsumer.is_bail_out {}).toBeFalsy()
+
 jasmine.getEnv().addReporter new TAPReporter console.log
 jasmine.getEnv().execute()
