@@ -39,5 +39,35 @@ describe 'TAPConsumer', ->
       expect(TAPConsumer.is_plan null).toBeFalsy()
       expect(TAPConsumer.is_plan {}).toBeFalsy()
 
+  describe '.is_ok', ->
+
+    it 'should return true when given ok line', ->
+
+      expect(TAPConsumer.is_ok 'ok').toBeTruthy()
+
+    it 'should return false when given no ok line', ->
+
+      expect(TAPConsumer.is_ok 'not ok').toBeFalsy()
+
+    it 'should return false when given not string object', ->
+
+      expect(TAPConsumer.is_ok null).toBeFalsy()
+      expect(TAPConsumer.is_ok {}).toBeFalsy()
+
+  describe '.is_not_ok', ->
+
+    it 'should return true when given not_ok line', ->
+
+      expect(TAPConsumer.is_not_ok 'not ok').toBeTruthy()
+
+    it 'should return false when given no not_ok line', ->
+
+      expect(TAPConsumer.is_not_ok 'ok').toBeFalsy()
+
+    it 'should return false when given not string object', ->
+
+      expect(TAPConsumer.is_not_ok null).toBeFalsy()
+      expect(TAPConsumer.is_not_ok {}).toBeFalsy()
+
 jasmine.getEnv().addReporter new TAPReporter console.log
 jasmine.getEnv().execute()
