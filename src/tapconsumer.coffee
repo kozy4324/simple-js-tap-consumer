@@ -8,4 +8,6 @@ class TAPConsumer
   @has_skip: (line) -> (@is_ok(line) or @is_not_ok(line)) and line?.match? /# skip/i
   @is_bail_out: (line) -> line?.match? /^Bail out!/
 
+  @parse_plan: (line) -> +line.match(/^\d+\.\.(\d+)/)[1]
+
 module.exports = TAPConsumer

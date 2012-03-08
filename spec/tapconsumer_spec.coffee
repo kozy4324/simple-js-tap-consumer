@@ -123,5 +123,13 @@ describe 'TAPConsumer', ->
       expect(TAPConsumer.is_bail_out null).toBeFalsy()
       expect(TAPConsumer.is_bail_out {}).toBeFalsy()
 
+  describe '.parse_plan', ->
+
+    it 'should return total plan number', ->
+
+      expect(TAPConsumer.parse_plan '1..1').toEqual 1
+      expect(TAPConsumer.parse_plan '1..5').toEqual 5
+      expect(TAPConsumer.parse_plan '1..18').toEqual 18
+
 jasmine.getEnv().addReporter new TAPReporter console.log
 jasmine.getEnv().execute()
