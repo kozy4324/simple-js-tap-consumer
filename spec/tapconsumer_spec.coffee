@@ -131,5 +131,17 @@ describe 'TAPConsumer', ->
       expect(TAPConsumer.parse_plan '1..5').toEqual 5
       expect(TAPConsumer.parse_plan '1..18').toEqual 18
 
+  describe '.parse_test', ->
+
+    it 'should return test number', ->
+
+      expect(TAPConsumer.parse_test 'ok 1').toEqual 1
+      expect(TAPConsumer.parse_test 'not ok 2').toEqual 2
+      expect(TAPConsumer.parse_test 'ok 67').toEqual 67
+
+    it 'should return -1 when given line do not have test number', ->
+
+      expect(TAPConsumer.parse_test 'ok').toEqual -1
+
 jasmine.getEnv().addReporter new TAPReporter console.log
 jasmine.getEnv().execute()

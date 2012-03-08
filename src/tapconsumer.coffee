@@ -9,5 +9,6 @@ class TAPConsumer
   @is_bail_out: (line) -> line?.match? /^Bail out!/
 
   @parse_plan: (line) -> +line.match(/^\d+\.\.(\d+)/)[1]
+  @parse_test: (line) -> +line.match(/^(?:not )?ok (\d+)/)?[1] or -1
 
 module.exports = TAPConsumer
