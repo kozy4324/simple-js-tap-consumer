@@ -143,5 +143,18 @@ describe 'TAPConsumer', ->
 
       expect(TAPConsumer.parse_test 'ok').toEqual -1
 
+  describe 'instance inital state', ->
+
+    ins = null
+    beforeEach -> ins = new TAPConsumer
+
+    describe '#total', ->
+
+      it 'should be 0', -> expect(ins.total).toEqual 0
+
+    describe '#current', ->
+
+      it 'should be 0', -> expect(ins.current).toEqual 0
+
 jasmine.getEnv().addReporter new TAPReporter console.log
 jasmine.getEnv().execute()
