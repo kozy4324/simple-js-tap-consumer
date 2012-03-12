@@ -11,4 +11,15 @@ class TAPConsumer
   @parse_plan: (line) -> +line.match(/^\d+\.\.(\d+)/)[1]
   @parse_test: (line) -> +line.match(/^(?:not )?ok (\d+)/)?[1] or -1
 
+  constructor: ->
+    @total = 0
+    @current = 0
+    @ok = 0
+    @not_ok = 0
+    @todo = 0
+    @skip = 0
+    @bailed_out = false
+
+  success: -> true
+
 module.exports = TAPConsumer
