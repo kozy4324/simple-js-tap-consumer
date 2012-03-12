@@ -14,5 +14,12 @@ class TAPConsumer
   constructor: ->
     @total = 0
     @current = 0
+    @ok = 0
+    @not_ok = 0
+    @todo = 0
+    @skip = 0
+    @bailed_out = false
+
+  success: -> true
 
 module.exports = TAPConsumer
