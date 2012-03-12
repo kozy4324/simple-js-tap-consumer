@@ -12,7 +12,7 @@ class TAPConsumer
   @parse_test: (line) -> +line.match(/^(?:not )?ok (\d+)/)?[1] or -1
 
   constructor: ->
-    @total = 0
+    @planed = 0
     @current = 0
     @ok = 0
     @not_ok = 0
@@ -21,5 +21,14 @@ class TAPConsumer
     @bailed_out = false
 
   success: -> true
+  total: -> @ok + @not_ok + @todo + @skip
+
+  consume: (line) ->
+    if TAPConsumer.is_plan line
+      @planed = TAPConsumer.parse_plan line
+    else if TAPConsumer.is_ok line
+      @ok++
+      num = TAPConsumer.parse_test line
+      @current++ if num is -1
 
 module.exports = TAPConsumer

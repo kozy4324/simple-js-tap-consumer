@@ -148,7 +148,7 @@ describe 'TAPConsumer', ->
     ins = null
     beforeEach -> ins = new TAPConsumer
 
-    describe '#total', -> it 'should be 0', -> expect(ins.total).toEqual 0
+    describe '#planed', -> it 'should be 0', -> expect(ins.planed).toEqual 0
     describe '#current', -> it 'should be 0', -> expect(ins.current).toEqual 0
     describe '#ok', -> it 'should be 0', -> expect(ins.ok).toEqual 0
     describe '#not_ok', -> it 'should be 0', -> expect(ins.not_ok).toEqual 0
@@ -156,6 +156,7 @@ describe 'TAPConsumer', ->
     describe '#skip', -> it 'should be 0', -> expect(ins.skip).toEqual 0
     describe '#bailed_out', -> it 'should be false', -> expect(ins.bailed_out).toBeFalsy()
     describe '#success()', -> it 'should return true', -> expect(ins.success()).toBeTruthy()
+    describe '#total()', -> it 'should be 0', -> expect(ins.total()).toEqual 0
 
 jasmine.getEnv().addReporter new TAPReporter console.log
 jasmine.getEnv().execute()
