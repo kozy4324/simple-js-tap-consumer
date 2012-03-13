@@ -16,8 +16,6 @@ describe 'TAPConsumer', ->
         ins.consume 'ok'
         expect(ins.success()).toBeTruthy()
         expect(ins.total()).toEqual 1
-        expect(ins.current).toEqual 1
-        expect(ins.ok).toEqual 1
 
     describe 'a plan and 3 ok test', ->
       it 'should success', ->
@@ -27,8 +25,6 @@ describe 'TAPConsumer', ->
         ins.consume 'ok'
         expect(ins.success()).toBeTruthy()
         expect(ins.total()).toEqual 3
-        expect(ins.current).toEqual 3
-        expect(ins.ok).toEqual 3
 
     describe '3 ok test(no plan)', ->
       it 'should success', ->
@@ -37,8 +33,22 @@ describe 'TAPConsumer', ->
         ins.consume 'ok'
         expect(ins.success()).toBeTruthy()
         expect(ins.total()).toEqual 3
-        expect(ins.current).toEqual 3
-        expect(ins.ok).toEqual 3
+
+    describe 'a plan and 1 not ok test', ->
+      it 'should fail', ->
+        ins.consume '1..1'
+        ins.consume 'not ok'
+        expect(ins.success()).toBeFalsy()
+        expect(ins.total()).toEqual 1
+
+    describe 'a plan and some test including not ok', ->
+      it 'should fail', ->
+        ins.consume '1..3'
+        ins.consume 'ok'
+        ins.consume 'not ok'
+        ins.consume 'ok'
+        expect(ins.success()).toBeFalsy()
+        expect(ins.total()).toEqual 3
 
 jasmine.getEnv().addReporter new TAPReporter console.log
 jasmine.getEnv().execute()

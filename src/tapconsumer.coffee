@@ -20,7 +20,7 @@ class TAPConsumer
     @skip = 0
     @bailed_out = false
 
-  success: -> true
+  success: -> @not_ok is 0
   total: -> @ok + @not_ok + @todo + @skip
 
   consume: (line) ->
@@ -28,6 +28,10 @@ class TAPConsumer
       @planed = TAPConsumer.parse_plan line
     else if TAPConsumer.is_ok line
       @ok++
+      num = TAPConsumer.parse_test line
+      @current++ if num is -1
+    else if TAPConsumer.is_not_ok line
+      @not_ok++
       num = TAPConsumer.parse_test line
       @current++ if num is -1
 
