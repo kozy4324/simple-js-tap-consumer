@@ -143,20 +143,21 @@ describe 'TAPConsumer', ->
 
       expect(TAPConsumer.parse_test 'ok').toEqual -1
 
-  describe 'instance inital state', ->
+  describe 'instance initial state', ->
 
     ins = null
     beforeEach -> ins = new TAPConsumer
 
-    describe '#planed', -> it 'should be 0', -> expect(ins.planed).toEqual 0
-    describe '#current', -> it 'should be 0', -> expect(ins.current).toEqual 0
-    describe '#ok', -> it 'should be 0', -> expect(ins.ok).toEqual 0
-    describe '#not_ok', -> it 'should be 0', -> expect(ins.not_ok).toEqual 0
-    describe '#todo', -> it 'should be 0', -> expect(ins.todo).toEqual 0
-    describe '#skip', -> it 'should be 0', -> expect(ins.skip).toEqual 0
-    describe '#bailed_out', -> it 'should be false', -> expect(ins.bailed_out).toBeFalsy()
+    describe '#_planed', -> it 'should be 0', -> expect(ins._planed).toEqual 0
+    describe '#_current', -> it 'should be 0', -> expect(ins._current).toEqual 0
+    describe '#_ok', -> it 'should be 0', -> expect(ins._ok).toEqual 0
+    describe '#_not_ok', -> it 'should be 0', -> expect(ins._not_ok).toEqual 0
+    describe '#_todo', -> it 'should be 0', -> expect(ins._todo).toEqual 0
+    describe '#_skip', -> it 'should be 0', -> expect(ins._skip).toEqual 0
+    describe '#_bailed_out', -> it 'should be false', -> expect(ins._bailed_out).toBeFalsy()
     describe '#success()', -> it 'should return true', -> expect(ins.success()).toBeTruthy()
     describe '#total()', -> it 'should be 0', -> expect(ins.total()).toEqual 0
+    describe '#failed_tests()', -> it 'should be a empty array', -> expect(ins.failed_tests()).toEqual []
 
 jasmine.getEnv().addReporter new TAPReporter console.log
 jasmine.getEnv().execute()
