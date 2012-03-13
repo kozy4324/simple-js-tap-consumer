@@ -19,9 +19,11 @@ class TAPConsumer
     @todo = 0
     @skip = 0
     @bailed_out = false
+    @_failed_tests = []
 
   success: -> @not_ok is 0
   total: -> @ok + @not_ok + @todo + @skip
+  failed_tests: -> @_failed_tests
 
   consume: (line) ->
     if TAPConsumer.is_plan line
@@ -34,5 +36,6 @@ class TAPConsumer
       @not_ok++
       num = TAPConsumer.parse_test line
       @current++ if num is -1
+      @_failed_tests.push "#{@current} - #{line.replace /^not ok\s*\d*\s*-?\s*/i, ''}"
 
 module.exports = TAPConsumer
