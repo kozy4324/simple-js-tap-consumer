@@ -63,5 +63,15 @@ describe 'TAPConsumer', ->
         expect(ins.failed_tests()[0]).toEqual '1 - description'
         expect(ins.failed_tests()[1]).toEqual '3 - other description'
 
+    describe 'mismatching plan and existance tests count', ->
+      it 'should fail', ->
+        ins.consume '1..3'
+        ins.consume 'ok'
+        ins.consume 'ok'
+        expect(ins.success()).toBeFalsy()
+        expect(ins.total()).toEqual 2
+        expect(ins.failed_tests().length).toEqual 1
+        expect(ins.failed_tests()[0]).toEqual '3 - (missing)'
+
 jasmine.getEnv().addReporter new TAPReporter console.log
 jasmine.getEnv().execute()

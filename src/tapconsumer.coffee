@@ -21,9 +21,14 @@ class TAPConsumer
     @_bailed_out = false
     @_failed_tests = []
 
-  success: -> @_not_ok is 0
+  success: ->
+    (@_not_ok is 0) and (@_planed is 0 or @_planed is @_current)
   total: -> @_ok + @_not_ok + @_todo + @_skip
-  failed_tests: -> @_failed_tests
+  failed_tests: ->
+    failed_tests = @_failed_tests.concat()
+    if @_current < @_planed
+      failed_tests.push "#{i} - (missing)" for i in [(@_current+1)..@_planed]
+    failed_tests
 
   consume: (line) ->
     if TAPConsumer.is_plan line
