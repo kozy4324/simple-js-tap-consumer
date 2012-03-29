@@ -28,6 +28,8 @@ class TAPConsumer
     failed_tests = @_failed_tests.concat()
     if @_current < @_planed
       failed_tests.push "#{i} - (missing)" for i in [(@_current+1)..@_planed]
+    if @_planed isnt @_current
+      failed_tests.push "(bad plan)"
     failed_tests
 
   consume: (line) ->
