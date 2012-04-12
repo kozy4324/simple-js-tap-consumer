@@ -38,11 +38,25 @@ class TAPConsumer
     else if TAPConsumer.is_ok line
       @_ok++
       num = TAPConsumer.parse_test line
-      @_current++ if num is -1
+      if num is -1
+        @_current++
+      else
+        if @_current+1 < num
+          for i in [(@_current+1)..(num-1)]
+            @_not_ok++
+            @_failed_tests.push "#{i} - (missing)"
+        @_current = num
     else if TAPConsumer.is_not_ok line
       @_not_ok++
       num = TAPConsumer.parse_test line
-      @_current++ if num is -1
+      if num is -1
+        @_current++
+      else
+        if @_current+1 < num
+          for i in [(@_current+1)..(num-1)]
+            @_not_ok++
+            @_failed_tests.push "#{i} - (missing)"
+        @_current = num
       @_failed_tests.push "#{@_current} - #{line.replace /^not ok\s*\d*\s*-?\s*/i, ''}"
 
 module.exports = TAPConsumer
