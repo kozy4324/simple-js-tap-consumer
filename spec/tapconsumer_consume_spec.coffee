@@ -109,6 +109,28 @@ describe 'TAPConsumer', ->
         expect(ins.failed_tests().length).toEqual 1
         expect(ins.failed_tests()[0]).toEqual '1 - '
 
+    describe 'planed 3 tests and run 2(missing number 3)', ->
+      it 'should fail', ->
+        ins.consume '1..3'
+        ins.consume 'ok 1'
+        ins.consume 'ok 2'
+        expect(ins.success()).toBeFalsy()
+        expect(ins.total()).toEqual 2
+        expect(ins.failed_tests().length).toEqual 2
+        expect(ins.failed_tests()[0]).toEqual '3 - (missing)'
+        expect(ins.failed_tests()[1]).toEqual '(bad plan)'
+
+    describe 'planed 2 tests but run 3', ->
+      it 'should fail', ->
+        ins.consume '1..2'
+        ins.consume 'ok 1'
+        ins.consume 'ok 2'
+        ins.consume 'ok 3'
+        expect(ins.success()).toBeFalsy()
+        expect(ins.total()).toEqual 3
+        expect(ins.failed_tests().length).toEqual 1
+        expect(ins.failed_tests()[0]).toEqual '(bad plan)'
+
     describe 'planed 3 tests and run 2(missing number 2)', ->
       it 'should fail', ->
         ins.consume '1..3'
@@ -128,6 +150,36 @@ describe 'TAPConsumer', ->
         expect(ins.failed_tests().length).toEqual 2
         expect(ins.failed_tests()[0]).toEqual '2 - (missing)'
         expect(ins.failed_tests()[1]).toEqual '3 - '
+
+    describe 'planed 1 tests and run 1 but test number is 2', ->
+      it 'should fail', ->
+        ins.consume '1..1'
+        ins.consume 'ok 2'
+        expect(ins.success()).toBeFalsy()
+        expect(ins.total()).toEqual 2
+        expect(ins.failed_tests().length).toEqual 2
+        expect(ins.failed_tests()[0]).toEqual '1 - (missing)'
+        expect(ins.failed_tests()[1]).toEqual '(bad plan)'
+
+    describe 'planed 1 tests but run 2 and test number is duplicate', ->
+      it 'should fail', ->
+        ins.consume '1..1'
+        ins.consume 'ok 1'
+        ins.consume 'ok 1 - this test is '
+        expect(ins.success()).toBeFalsy()
+        expect(ins.total()).toEqual 2
+        expect(ins.failed_tests().length).toEqual 1
+        expect(ins.failed_tests()[0]).toEqual '1 - this test is (duplicate)'
+
+      it 'should fail', ->
+        ins.consume '1..1'
+        ins.consume 'ok 1'
+        ins.consume 'not ok 1 - this test is '
+        expect(ins.success()).toBeFalsy()
+        expect(ins.total()).toEqual 2
+        expect(ins.failed_tests().length).toEqual 2
+        expect(ins.failed_tests()[0]).toEqual '1 - this test is (duplicate)'
+        expect(ins.failed_tests()[1]).toEqual '1 - this test is '
 
 jasmine.getEnv().addReporter new TAPReporter console.log
 jasmine.getEnv().execute()

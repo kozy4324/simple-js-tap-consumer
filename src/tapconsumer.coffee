@@ -45,6 +45,10 @@ class TAPConsumer
           for i in [(@_current+1)..(num-1)]
             @_not_ok++
             @_failed_tests.push "#{i} - (missing)"
+        else if num <= @_current
+          @_not_ok++
+          @_ok--
+          @_failed_tests.push "#{num} - #{line.replace /^ok\s*\d*\s*-?\s*/i, ''}(duplicate)"
         @_current = num
     else if TAPConsumer.is_not_ok line
       @_not_ok++
@@ -56,6 +60,8 @@ class TAPConsumer
           for i in [(@_current+1)..(num-1)]
             @_not_ok++
             @_failed_tests.push "#{i} - (missing)"
+        else if num <= @_current
+          @_failed_tests.push "#{num} - #{line.replace /^not ok\s*\d*\s*-?\s*/i, ''}(duplicate)"
         @_current = num
       @_failed_tests.push "#{@_current} - #{line.replace /^not ok\s*\d*\s*-?\s*/i, ''}"
 
