@@ -4,6 +4,7 @@ class TAPConsumer
   @is_plan: (line) -> line?.match? /^\d+\.\.\d+/
   @is_ok: (line) -> line?.match? /^ok/
   @is_not_ok: (line) -> line?.match? /^not ok/
+  @is_test: (line) -> TAPConsumer.is_ok(line) or TAPConsumer.is_not_ok(line)
   @has_todo: (line) -> (@is_ok(line) or @is_not_ok(line)) and line?.match? /# todo/i
   @has_skip: (line) -> (@is_ok(line) or @is_not_ok(line)) and line?.match? /# skip/i
   @is_bail_out: (line) -> line?.match? /^Bail out!/

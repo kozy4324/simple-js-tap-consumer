@@ -69,6 +69,22 @@ describe 'TAPConsumer', ->
       expect(TAPConsumer.is_not_ok null).toBeFalsy()
       expect(TAPConsumer.is_not_ok {}).toBeFalsy()
 
+  describe '.is_test', ->
+
+    it 'should return true when given test line', ->
+
+      expect(TAPConsumer.is_test 'ok').toBeTruthy()
+      expect(TAPConsumer.is_test 'not ok').toBeTruthy()
+
+    it 'should return false when given not test line', ->
+
+      expect(TAPConsumer.is_test '1..1').toBeFalsy()
+
+    it 'should return false when given not string object', ->
+
+      expect(TAPConsumer.is_ok null).toBeFalsy()
+      expect(TAPConsumer.is_ok {}).toBeFalsy()
+
   describe '.has_todo', ->
 
     it 'should return true when given line is a test line and has TODO directive', ->
