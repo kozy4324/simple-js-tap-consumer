@@ -34,29 +34,28 @@ class TAPConsumer
     failed_tests
 
   consume: (line) ->
-    is_ok = TAPConsumer.is_ok line
-    is_not_ok = TAPConsumer.is_not_ok line
-    if TAPConsumer.is_plan line
-      @_planed = TAPConsumer.parse_plan line
-    else if is_ok or is_not_ok
-      @_ok++ if is_ok
-      @_not_ok++if is_not_ok
-      num = TAPConsumer.parse_test line
+    {is_plan, is_ok, is_not_ok, is_test, parse_plan, parse_test} = TAPConsumer
+    if is_plan line
+      @_planed = parse_plan line
+    else if is_test line
+      num = parse_test line
       msg = line.replace /^(not )?ok\s*\d*\s*-?\s*/i, ''
-      if num is -1
+      if num is -1 or @_current+1 is num
         @_current++
-      else
-        if @_current+1 < num
-          for i in [(@_current+1)..(num-1)]
-            @_not_ok++
-            @_failed_tests.push "#{i} - (missing)"
-        else if num <= @_current
-          if is_ok
-            @_not_ok++
-            @_ok--
-          @_failed_tests.push "#{num} - #{msg}(duplicate)"
+      else if @_current+1 <= num
+        for i in [(@_current+1)..(num-1)]
+          @_not_ok++
+          @_failed_tests.push "#{i} - (missing)"
         @_current = num
-      if is_not_ok
+      else if num <= @_current
+        if is_ok line
+          @_not_ok++
+          @_ok--
+        @_failed_tests.push "#{num} - #{msg}(duplicate)"
+      if is_ok line
+        @_ok++
+      else
+        @_not_ok++
         @_failed_tests.push "#{@_current} - #{msg}"
 
 module.exports = TAPConsumer
