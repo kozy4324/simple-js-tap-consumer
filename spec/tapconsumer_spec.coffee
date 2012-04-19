@@ -69,6 +69,22 @@ describe 'TAPConsumer', ->
       expect(TAPConsumer.is_not_ok null).toBeFalsy()
       expect(TAPConsumer.is_not_ok {}).toBeFalsy()
 
+  describe '.is_test', ->
+
+    it 'should return true when given test line', ->
+
+      expect(TAPConsumer.is_test 'ok').toBeTruthy()
+      expect(TAPConsumer.is_test 'not ok').toBeTruthy()
+
+    it 'should return false when given not test line', ->
+
+      expect(TAPConsumer.is_test '1..1').toBeFalsy()
+
+    it 'should return false when given not string object', ->
+
+      expect(TAPConsumer.is_ok null).toBeFalsy()
+      expect(TAPConsumer.is_ok {}).toBeFalsy()
+
   describe '.has_todo', ->
 
     it 'should return true when given line is a test line and has TODO directive', ->
@@ -143,19 +159,21 @@ describe 'TAPConsumer', ->
 
       expect(TAPConsumer.parse_test 'ok').toEqual -1
 
-  describe 'instance inital state', ->
+  describe 'instance initial state', ->
 
     ins = null
     beforeEach -> ins = new TAPConsumer
 
-    describe '#total', -> it 'should be 0', -> expect(ins.total).toEqual 0
-    describe '#current', -> it 'should be 0', -> expect(ins.current).toEqual 0
-    describe '#ok', -> it 'should be 0', -> expect(ins.ok).toEqual 0
-    describe '#not_ok', -> it 'should be 0', -> expect(ins.not_ok).toEqual 0
-    describe '#todo', -> it 'should be 0', -> expect(ins.todo).toEqual 0
-    describe '#skip', -> it 'should be 0', -> expect(ins.skip).toEqual 0
-    describe '#bailed_out', -> it 'should be false', -> expect(ins.bailed_out).toBeFalsy()
+    describe '#_planed', -> it 'should be 0', -> expect(ins._planed).toEqual 0
+    describe '#_current', -> it 'should be 0', -> expect(ins._current).toEqual 0
+    describe '#_ok', -> it 'should be 0', -> expect(ins._ok).toEqual 0
+    describe '#_not_ok', -> it 'should be 0', -> expect(ins._not_ok).toEqual 0
+    describe '#_todo', -> it 'should be 0', -> expect(ins._todo).toEqual 0
+    describe '#_skip', -> it 'should be 0', -> expect(ins._skip).toEqual 0
+    describe '#_bailed_out', -> it 'should be false', -> expect(ins._bailed_out).toBeFalsy()
     describe '#success()', -> it 'should return true', -> expect(ins.success()).toBeTruthy()
+    describe '#total()', -> it 'should be 0', -> expect(ins.total()).toEqual 0
+    describe '#failed_tests()', -> it 'should be a empty array', -> expect(ins.failed_tests()).toEqual []
 
 jasmine.getEnv().addReporter new TAPReporter console.log
 jasmine.getEnv().execute()
