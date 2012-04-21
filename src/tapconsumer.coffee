@@ -35,6 +35,16 @@ class TAPConsumer
     if @_planed isnt @_current
       failed_tests.push "(bad plan)"
     failed_tests
+  toString: ->
+    total = @total()
+    failed = @_failed_tests.length
+    if @success()
+      "All #{total} tests passed."
+    else
+      if failed > 0
+        "Failed #{failed}/#{total} tests."
+      else
+        "Bad plan. You planned #{@_planed} tests but ran #{total}"
 
   consume: (line) ->
     {is_plan, is_ok, is_not_ok, is_test, parse_plan, parse_test} = TAPConsumer
