@@ -70,4 +70,7 @@ class TAPConsumer
         @_not_ok++
         @_failed_tests.push "#{@_current} - #{msg}"
 
-module.exports = TAPConsumer
+if typeof module isnt 'undefined'
+  module.exports = TAPConsumer
+else
+  @['TAPConsumer'] = TAPConsumer
