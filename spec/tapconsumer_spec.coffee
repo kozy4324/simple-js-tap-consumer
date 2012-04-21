@@ -149,15 +149,19 @@ describe 'TAPConsumer', ->
 
   describe '.parse_test', ->
 
-    it 'should return test number', ->
+    it 'should return test number and message', ->
 
-      expect(TAPConsumer.parse_test 'ok 1').toEqual 1
-      expect(TAPConsumer.parse_test 'not ok 2').toEqual 2
-      expect(TAPConsumer.parse_test 'ok 67').toEqual 67
+      expect(TAPConsumer.parse_test 'ok 1').toEqual {num:1, msg:""}
+      expect(TAPConsumer.parse_test 'not ok 2').toEqual {num:2, msg:""}
+      expect(TAPConsumer.parse_test 'ok 67 - this is message').toEqual {num:67, msg:"this is message"}
+      expect(TAPConsumer.parse_test 'not ok 345 - hahaha!').toEqual {num:345, msg:"hahaha!"}
 
     it 'should return -1 when given line do not have test number', ->
 
-      expect(TAPConsumer.parse_test 'ok').toEqual -1
+      expect(TAPConsumer.parse_test 'ok').toEqual {num:-1, msg:""}
+      expect(TAPConsumer.parse_test 'not ok').toEqual {num:-1, msg:""}
+      expect(TAPConsumer.parse_test 'ok this is message').toEqual {num:-1, msg:"this is message"}
+      expect(TAPConsumer.parse_test 'not ok no number').toEqual {num:-1, msg:"no number"}
 
   describe 'instance initial state', ->
 
