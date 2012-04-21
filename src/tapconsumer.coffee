@@ -10,7 +10,10 @@ class TAPConsumer
   @is_bail_out: (line) -> line?.match? /^Bail out!/
 
   @parse_plan: (line) -> +line.match(/^\d+\.\.(\d+)/)[1]
-  @parse_test: (line) -> +line.match(/^(?:not )?ok (\d+)/)?[1] or -1
+  @parse_test: (line) ->
+    num = +line.match(/^(?:not )?ok (\d+)/i)?[1] or -1
+    msg = line.replace /^(not )?ok\s*\d*\s*-?\s*/i, ''
+    {num, msg}
 
   constructor: ->
     @_planed = 0
