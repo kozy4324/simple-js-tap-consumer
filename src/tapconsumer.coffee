@@ -41,8 +41,7 @@ class TAPConsumer
     if is_plan line
       @_planed = parse_plan line
     else if is_test line
-      num = parse_test line
-      msg = line.replace /^(not )?ok\s*\d*\s*-?\s*/i, ''
+      {num, msg} = parse_test line
       if num is -1 or @_current+1 is num
         @_current++
       else if @_current+1 <= num
